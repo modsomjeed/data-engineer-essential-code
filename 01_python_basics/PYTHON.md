@@ -593,6 +593,31 @@ clearance_price = make_discount(0.50)  # 50% off
 print(f"member_price(35000)={member_price(35000)}, clearance_price(35000)={clearance_price(35000)}")
 ```
 
+### `04_generators.py`
+```python
+# generator for memory efficiency (data engineering core concept)
+print("--- Generator Function (yield) ---")
+
+def stream_log_records(count):
+    """Simulate streaming data from a large server log file without loading all into RAM."""
+    for i in range(1, count + 1):
+        # yields one row at a time, pausing function execution state
+        yield f"2026-06-23,LOG_EVENT_{i:03d},INFO,user_id={1000+i}"
+
+# Getting generator object
+log_stream = stream_log_records(1000000)  # Contains 1 million entries
+print(f"Object: {log_stream}")           # Just a generator object, doesn't consume memory yet
+
+# Pulling values with next()
+print(f"First record:  {next(log_stream)}")
+print(f"Second record: {next(log_stream)}")
+
+# Iterating generator in a loop (streams records one-by-one)
+print("\n--- Iterating Generator ---")
+for record in stream_log_records(3):
+    print(f"  Processing record: {record}")
+```
+
 ---
 
 ## 07 Data Structures
@@ -952,6 +977,36 @@ except FileNotFoundError as e:
     print(f"  FileNotFoundError: {e}")
 ```
 
+### `03_context_manager.py`
+```python
+# context managers (with statement) — guarantees resource cleanup (db connection, file closing)
+print("--- Using with for File I/O ---")
+
+# File is automatically closed when exiting the block, even if an exception occurs
+with open("test_file.txt", "w") as f:
+    f.write("P001,Laptop Pro,35000\n")
+
+print("File written and automatically closed.")
+
+# Simulating database/API resource connections
+class MockDatabaseConnection:
+    def __enter__(self):
+        print("  Database Connection opened.")
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        print("  Database Connection closed automatically.")
+        # Return False to propagate exceptions, True to suppress them
+        return False
+
+    def query(self, sql):
+        print(f"  Executing: {sql}")
+
+print("\n--- Custom Context Manager ---")
+with MockDatabaseConnection() as db:
+    db.query("SELECT * FROM sales")
+```
+
 ---
 
 ## 09 String Manipulation
@@ -1124,4 +1179,95 @@ print(f"public members:       {public}")
 
 # __name__ here is '__main__' because THIS file is the one being run
 print(f"\nthis file's __name__:  {__name__}")
+```
+
+### `02_pathlib.py`
+```python
+# pathlib for filesystem operations (Modern standard instead of os.path)
+print("--- pathlib.Path basic operations ---")
+from pathlib import Path
+
+# Get current file directory or workspace path
+current_dir = Path(__file__).resolve().parent
+print(f"Current folder:   {current_dir}")
+print(f"Parent folder:    {current_dir.parent}")
+
+# Create directories safely (DE pipeline target storage setup)
+output_dir = current_dir / "output_data" / "year=2026" / "month=06"
+output_dir.mkdir(parents=True, exist_ok=True)
+print(f"Directory created: {output_dir.exists()}")
+
+# Find files in a directory using Glob patterns
+print("\n--- Search Files using Glob ---")
+project_root = current_dir.parent.parent
+print(f"Searching datasets folder in {project_root / 'datasets'}:")
+for filepath in (project_root / "datasets").glob("*"):
+    print(f"  Found file: {filepath.name} (Suffix: {filepath.suffix})")
+```
+
+### `03_datetime.py`
+```python
+# datetime and timezones (Crucial for data pipelines, timestamps, UTC formats)
+print("--- datetime Basics ---")
+from datetime import datetime, timezone, timedelta
+
+# Local current time vs UTC (always store and work with UTC in databases/data lakes)
+now_local = datetime.now()
+now_utc = datetime.now(timezone.utc)
+print(f"Local time: {now_local}")
+print(f"UTC time:   {now_utc}")
+
+# formatting time to string (strftime - formatting logs or path partition)
+print("\n--- strftime (datetime -> string) ---")
+date_str = now_utc.strftime("%Y-%m-%d %H:%M:%S %Z")
+partition_path = now_utc.strftime("year=%Y/month=%m/day=%d")
+print(f"Formatted:  {date_str}")
+print(f"Partition:  {partition_path}")
+
+# parsing string to datetime object (strptime - parsing timestamp fields from raw CSV/JSON)
+print("\n--- strptime (string -> datetime) ---")
+raw_timestamp = "2026-06-23T14:46:00Z"
+parsed_dt = datetime.strptime(raw_timestamp, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+print(f"Parsed:     {parsed_dt} ({parsed_dt.tzinfo})")
+
+# Timedelta (calculating data retention/expiration or SLA offsets)
+yesterday = now_utc - timedelta(days=1)
+print(f"\nYesterday UTC: {yesterday}")
+```
+
+### `04_json.py`
+```python
+# json module — Parsing raw API responses and database configs
+print("--- json.loads (string -> python dict) ---")
+import json
+
+# Simulated API response payload
+raw_json_str = """
+{
+    "sku": "P001",
+    "name": "Laptop Pro",
+    "price": 35000,
+    "in_stock": true,
+    "tags": ["electronics", "work"]
+}
+"""
+
+data = json.loads(raw_json_str)
+print(f"Type:         {type(data)}")
+print(f"SKU:          {data['sku']}")
+print(f"First tag:    {data['tags'][0]}")
+
+# json.dumps (python dict -> string) - preparing payload to write to file or API request
+print("\n--- json.dumps (dict -> string) ---")
+config = {
+    "host": "localhost",
+    "port": 5432,
+    "credentials": {
+        "user": "postgres",
+        "secret": "dbpass"
+    }
+}
+
+json_payload = json.dumps(config, indent=4)
+print(json_payload)
 ```
