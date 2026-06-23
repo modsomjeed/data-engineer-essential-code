@@ -1,0 +1,6 @@
+2024-03-02 03:11:27 ERROR Failed to connect to redis: connection refused
+2024-03-02 06:22:51 ERROR NullPointerException in transform.parse_amount
+2024-03-02 09:14:03 ERROR Disk space low on /data (95% used)
+2024-03-02 11:48:22 ERROR Timeout while reading raw/customer.csv
+2024-03-02 14:02:10 ERROR Schema mismatch: expected 5 columns, got 4
+2024-03-02 17:33:58 ERROR Permission denied: /data/processed/output.parquet

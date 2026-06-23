@@ -1,0 +1,12 @@
+2024-03-02 08:00:01 INFO  [daily_sales] started
+2024-03-02 08:00:05 INFO  [daily_sales] extract: 10 rows
+2024-03-02 08:00:09 INFO  [daily_sales] load: 9 rows
+2024-03-02 08:00:09 INFO  [daily_sales] SUCCESS in 8s
+2024-03-02 09:00:01 INFO  [daily_customer] started
+2024-03-02 09:00:33 ERROR [daily_customer] FAILED: source timeout
+2024-03-02 10:00:01 INFO  [hourly_events] started
+2024-03-02 10:00:14 INFO  [hourly_events] SUCCESS in 13s
+2024-03-02 11:00:01 INFO  [daily_customer] retry started
+2024-03-02 11:00:48 ERROR [daily_customer] FAILED: source timeout
+2024-03-02 12:00:01 INFO  [hourly_events] started
+2024-03-02 12:00:11 INFO  [hourly_events] SUCCESS in 10s

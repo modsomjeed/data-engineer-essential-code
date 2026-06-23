@@ -1,0 +1,8 @@
+# report.txt
+#
+# ไฟล์นี้เริ่มต้นว่างเปล่า (placeholder)
+# คุณจะเขียนผลลัพธ์ลงในไฟล์นี้ด้วย redirect (>) และ append (>>)
+#
+# ตัวอย่าง:
+#   wc -l input/users.csv > output/report.txt
+#   grep "TH" input/users.csv | wc -l >> output/report.txt

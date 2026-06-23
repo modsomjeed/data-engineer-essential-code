@@ -1,0 +1,15 @@
+# env_example.txt — ตัวอย่างไฟล์ environment (เหมือน .env)
+# คัดลอกเป็น .env แล้วเติมค่าจริง:   cp env_example.txt .env
+# ⚠️ ห้าม commit ไฟล์ .env ที่มีค่าจริงลง git เด็ดขาด
+
+PIPELINE_NAME=daily_sales
+DATA_DIR=/data/raw
+OUTPUT_DIR=/data/processed
+
+WAREHOUSE_HOST=clickhouse-prod-01
+WAREHOUSE_PORT=9000
+WAREHOUSE_USER=etl_user
+WAREHOUSE_PASSWORD=change_me_please
+
+LOG_LEVEL=INFO
+TEAMS_WEBHOOK_URL=https://example.webhook.office.com/xxxx

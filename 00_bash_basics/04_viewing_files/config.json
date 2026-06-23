@@ -1,0 +1,25 @@
+{
+  "pipeline": {
+    "name": "daily_sales",
+    "schedule": "0 8 * * *",
+    "retries": 3,
+    "timeout_seconds": 300
+  },
+  "source": {
+    "type": "csv",
+    "path": "03_file_management/raw/sales.csv",
+    "delimiter": ","
+  },
+  "destination": {
+    "type": "warehouse",
+    "host": "clickhouse-prod-01",
+    "port": 9000,
+    "database": "analytics",
+    "table": "fact_sales"
+  },
+  "alerting": {
+    "enabled": true,
+    "channel": "teams",
+    "notify_on": ["failure", "retry"]
+  }
+}

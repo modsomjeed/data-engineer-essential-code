@@ -1,0 +1,20 @@
+# System Information (ตัวอย่าง)
+# ไฟล์นี้จำลองผลลัพธ์ที่ได้จากคำสั่งสำรวจระบบ
+
+OS              : Ubuntu 22.04.4 LTS
+Kernel          : 5.15.0-91-generic
+Architecture    : x86_64
+Hostname        : data-pipeline-prod-01
+User            : student
+Shell           : /bin/bash
+CPU             : 4 vCPU
+Memory          : 16 GB
+Disk            : 100 GB (root /)
+Timezone        : Asia/Bangkok
+
+# คำสั่งที่ใช้ดูข้อมูลเหล่านี้ในระบบจริง:
+#   whoami      -> ดูว่าเราคือ user อะไร
+#   hostname    -> ดูชื่อเครื่อง
+#   uname -a    -> ดูข้อมูล kernel / OS
+#   date        -> ดูวันเวลาปัจจุบัน
+#   echo $SHELL -> ดู shell ที่ใช้อยู่

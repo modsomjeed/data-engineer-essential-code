@@ -1,0 +1,14 @@
+Meeting Notes - Data Platform Sync
+Date: 2024-03-01
+
+TODO:
+- [ ] เพิ่ม retry logic ใน daily_customer pipeline
+- [ ] ตั้ง alert เมื่อ disk usage > 90%
+- [x] ย้าย raw files ไปที่ /data/raw
+- [ ] เขียน data quality check สำหรับ sales.csv
+
+Ideas:
+- ลองใช้ ClickHouse แทน Postgres สำหรับ analytics table
+- pipeline ควรมี idempotency key
+
+Contact: senior engineer -> teams channel #data-eng-oncall

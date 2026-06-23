@@ -1,0 +1,16 @@
+user_id,name,country,plan,active
+U001,Somchai,TH,free,true
+U002,Pranee,TH,pro,true
+U003,John,US,free,false
+U004,Maria,ES,pro,true
+U005,Anan,TH,free,true
+U006,Yuki,JP,enterprise,true
+U007,Kanya,TH,pro,false
+U008,David,US,free,true
+U009,Wichai,TH,pro,true
+U010,Linda,US,enterprise,true
+U011,Decha,TH,free,true
+U012,Sofia,ES,free,false
+U013,Malee,TH,pro,true
+U014,Chen,CN,enterprise,true
+U015,Ploy,TH,free,true

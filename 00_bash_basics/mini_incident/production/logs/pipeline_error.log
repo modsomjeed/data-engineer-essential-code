@@ -1,0 +1,13 @@
+2024-03-15 02:00:01 INFO  [nightly_sales] Pipeline triggered by scheduler
+2024-03-15 02:00:02 INFO  [extract] Reading source file /data/raw/sales.csv
+2024-03-15 02:00:03 INFO  [extract] 10240 rows extracted
+2024-03-15 02:00:04 INFO  [validate] Checking schema (6 columns expected)
+2024-03-15 02:00:05 ERROR [validate] Schema mismatch on line 5832: expected 6 columns, got 5 (column 'amount' missing)
+2024-03-15 02:00:05 ERROR [validate] Offending row written to /data/quarantine/failed_job.csv
+2024-03-15 02:00:05 WARN  [validate] 1 row failed validation, continuing in lenient mode
+2024-03-15 02:00:06 INFO  [transform] Joining with product catalog
+2024-03-15 02:00:09 ERROR [transform] NoneType has no attribute 'split' at transform.parse_amount (row 5832)
+2024-03-15 02:00:09 ERROR [transform] Unhandled exception, aborting pipeline
+2024-03-15 02:00:10 ERROR [load] Skipped — upstream stage failed
+2024-03-15 02:00:10 ERROR [scheduler] Pipeline 'nightly_sales' FAILED after 9s
+2024-03-15 02:00:10 INFO  [alerting] Sending failure alert to Microsoft Teams #data-eng-oncall

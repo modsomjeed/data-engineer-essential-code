@@ -1,0 +1,20 @@
+Project Requirements - Sales Analytics Pipeline
+
+1. Functional Requirements
+   - ingest sales.csv ทุกวันเวลา 08:00
+   - join กับ product catalog เพื่อเติม category
+   - load เข้า warehouse table fact_sales
+
+2. Data Quality
+   - order_id ต้องไม่ซ้ำ (unique)
+   - amount ต้องมากกว่า 0
+   - product_id ต้องมีอยู่ใน product catalog
+
+3. Non-Functional Requirements
+   - pipeline ต้องเสร็จภายใน 5 นาที
+   - retry สูงสุด 3 ครั้งเมื่อ source ล้มเหลว
+   - ส่ง alert ไปที่ Microsoft Teams เมื่อ FAILED
+
+4. Security
+   - ห้าม commit password ลง git
+   - ใช้ environment variable สำหรับ credential ทั้งหมด

@@ -1,0 +1,18 @@
+2024-03-01 08:00:01 INFO  [scheduler] Pipeline 'daily_sales' triggered
+2024-03-01 08:00:02 INFO  [extract] Reading source file raw/sales.csv
+2024-03-01 08:00:03 INFO  [extract] 10 rows extracted
+2024-03-01 08:00:03 INFO  [validate] Checking schema...
+2024-03-01 08:00:04 INFO  [validate] Schema OK
+2024-03-01 08:00:04 INFO  [transform] Joining sales with product catalog
+2024-03-01 08:00:05 WARN  [transform] product_id 'P99' not found in catalog, row skipped
+2024-03-01 08:00:06 INFO  [transform] 9 rows transformed
+2024-03-01 08:00:06 INFO  [load] Writing to warehouse table fact_sales
+2024-03-01 08:00:08 INFO  [load] 9 rows loaded
+2024-03-01 08:00:08 INFO  [scheduler] Pipeline 'daily_sales' completed in 7s
+2024-03-01 09:00:01 INFO  [scheduler] Pipeline 'daily_customer' triggered
+2024-03-01 09:00:02 INFO  [extract] Reading source file raw/customer.csv
+2024-03-01 09:00:03 ERROR [extract] Connection timeout to source database
+2024-03-01 09:00:13 ERROR [extract] Retry 1/3 failed
+2024-03-01 09:00:23 ERROR [extract] Retry 2/3 failed
+2024-03-01 09:00:33 ERROR [extract] Retry 3/3 failed
+2024-03-01 09:00:33 ERROR [scheduler] Pipeline 'daily_customer' FAILED

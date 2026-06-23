@@ -1,0 +1,3 @@
+# Workshop fixture logs are intentional sample data — keep them tracked
+# (overrides the root .gitignore "*.log" rule for this module only)
+!*.log

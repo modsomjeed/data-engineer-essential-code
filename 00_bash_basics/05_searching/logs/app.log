@@ -1,0 +1,11 @@
+2024-03-02 00:01:11 INFO  Service started on port 8080
+2024-03-02 00:05:32 INFO  Health check OK
+2024-03-02 01:15:09 WARN  Memory usage at 82%
+2024-03-02 02:30:44 INFO  Health check OK
+2024-03-02 03:11:27 ERROR Failed to connect to redis: connection refused
+2024-03-02 03:11:30 INFO  Reconnected to redis
+2024-03-02 04:45:19 WARN  Slow query detected (1.8s) on table fact_sales
+2024-03-02 05:00:00 INFO  Health check OK
+2024-03-02 06:22:51 ERROR NullPointerException in transform.parse_amount
+2024-03-02 07:00:00 INFO  Health check OK
+2024-03-02 08:00:01 INFO  Daily pipeline started
