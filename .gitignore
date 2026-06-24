@@ -13,3 +13,7 @@ dist/
 build/
 *.egg-info/
 *credentials.json
+
+
+ai_memory
+/ψ
