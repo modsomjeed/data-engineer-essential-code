@@ -26,6 +26,71 @@ Pattern นี้คือ **ELT** (Extract → Load to lake → Transform in wa
 
 ---
 
+## Stack & Rationale
+
+เลือก tool แต่ละตัวด้วยเหตุผล ไม่ใช่แค่เพราะฟังดูดี
+
+| Layer | Tool | หมวด |
+|-------|------|------|
+| Object Storage | RustFS (S3-compatible) | Data Lake |
+| Data Warehouse | ClickHouse | OLAP |
+| Lakehouse | Delta Lake + DuckDB | Lakehouse |
+| Relational DB | SQLite | Database |
+| Package manager | uv | Tooling |
+
+### RustFS — Data Lake
+
+RustFS ใช้ S3 API เหมือน AWS S3 ทุกประการ ซึ่งหมายความว่า boto3 code ที่เขียนในคอร์สนี้ **ใช้กับ AWS S3 จริงได้เลยโดยไม่ต้องแก้โค้ด** แค่เปลี่ยน endpoint URL
+
+เหตุผลที่เลือก object storage สำหรับ raw data:
+- **Schema-on-read** — เก็บไฟล์ได้ทุกรูปแบบ (CSV, JSON, Parquet) โดยไม่ต้องรู้ schema ล่วงหน้า
+- **Immutable raw layer** — raw data อยู่ใน lake เสมอ ถ้า transform logic ผิดพลาดสามารถ reprocess ใหม่ได้
+- **ราคา** — object storage ถูกกว่า database มาก เหมาะกับเก็บข้อมูลที่ยังไม่รู้ว่าจะใช้ยังไง
+
+### ClickHouse — Data Warehouse
+
+ClickHouse เป็น **column-oriented database** ออกแบบมาสำหรับ analytical queries (OLAP) โดยเฉพาะ ต่างจาก PostgreSQL ที่ออกแบบมาสำหรับ transactional workload (OLTP)
+
+| | PostgreSQL | ClickHouse |
+|-|-----------|------------|
+| เหมาะกับ | INSERT/UPDATE/DELETE ถี่ ๆ | SELECT + GROUP BY ข้อมูลเยอะ |
+| เก็บข้อมูล | Row-oriented | Column-oriented |
+| Aggregate 100M แถว | ช้า | เร็วมาก |
+
+จุดเด่นอีกข้อ: `s3()` table function ช่วยให้ ClickHouse **query ไฟล์ใน RustFS ได้โดยตรง** โดยไม่ต้องโหลดเข้า database ก่อน — นี่คือหัวใจของ module 05 (lake → warehouse)
+
+### Delta Lake — Lakehouse
+
+Delta Lake เพิ่ม **ACID transactions** ให้กับ Parquet files ธรรมดา
+
+- **ไม่ต้องกลัว partial write** — ถ้า pipeline fail กลางคัน ข้อมูลจะ rollback อัตโนมัติ
+- **Time travel** — ดูข้อมูล ณ version ก่อนหน้าได้ด้วย `version_as_of`
+- **Pattern เหมือน production** — Databricks, Apache Spark, และ Azure Synapse ใช้ Delta Lake เป็น default storage format
+
+### SQLite — Database module
+
+ใช้ SQLite เพราะ built-in ใน Python ไม่ต้องติดตั้งอะไรเพิ่ม เหมาะที่สุดสำหรับสอน **schema-on-write concept** ให้ชัดเจน ก่อนไปจับ tool ที่ซับซ้อนกว่า
+
+### uv — Package manager
+
+`uv` เร็วกว่า `pip` มาก และแก้ปัญหา "มันรันได้บนเครื่องฉันนะ" ได้ด้วย lock file `uv run script.py` รัน script ได้เลยโดยไม่ต้อง activate virtual environment ก่อน
+
+### ELT ไม่ใช่ ETL
+
+คอร์สนี้สอน **ELT** (Extract → Load → Transform) แทน ETL แบบเก่า
+
+```
+ETL (แบบเก่า):  Extract → Transform → Load warehouse
+ELT (แบบใหม่):  Extract → Load lake → Transform ใน warehouse
+```
+
+ทำไม ELT ดีกว่าในบริบทนี้:
+- **Raw data ยังอยู่** — ถ้า business logic เปลี่ยน reprocess ได้ทันที ไม่ต้องดึงจาก source ใหม่
+- **Transform ที่ warehouse** — compute อยู่ที่ ClickHouse แล้ว ใช้ SQL ตรง ๆ ไม่ต้องมี transformation layer พิเศษ
+- **Pattern มาตรฐาน** — dbt, Fivetran, Airbyte และ modern data stack ส่วนใหญ่ทำแบบนี้
+
+---
+
 ## Curriculum
 
 | Module | Topics |
