@@ -1,6 +1,30 @@
 # Data Engineer Essential
 
-Structured learning path covering Python fundamentals through data engineering with real-world storage systems. Each module is self-contained and runnable, using a shared e-commerce dataset throughout.
+## Scenario
+
+**Refreshco** คือบริษัทจัดจำหน่ายเครื่องดื่มให้ร้านค้าทั่วประเทศ ธุรกิจกำลังโต แต่ข้อมูลกระจายอยู่ตามระบบต่าง ๆ — ทีมขายเก็บออเดอร์ในระบบ CRM, ทีมโลจิสติกส์มีระบบขนส่งของตัวเอง, ทีม Product เก็บ catalog ไว้ใน JSON
+
+ทุกสัปดาห์ผู้บริหารต้องการคำตอบว่า _"ภาคไหนยอดตก สินค้าไหนขายดี"_ แต่ตอนนี้ต้องรอให้ทีม Finance รวม Excel ก่อนทุกครั้ง — กินเวลา 2–3 วัน
+
+---
+
+**คุณคือ Data Engineer คนแรกของทีม** ภารกิจคือสร้าง Data Platform ตั้งแต่ศูนย์:
+
+```
+Raw Sources          Object Storage       Data Warehouse
+(CSV / API / DB) --> (RustFS / S3)    --> (ClickHouse)  --> Analyst query ได้เอง
+                      เก็บ raw ไว้         transform &
+                      reprocess ได้         aggregate
+```
+
+**เป้าหมายปลายทาง:**
+- Analyst query ข้อมูลใน ClickHouse ได้ทันที ไม่ต้องรอ
+- Raw data ยังอยู่ใน object storage เผื่อ reprocess ในอนาคต
+- Pipeline รันซ้ำได้ (idempotent) ไม่มี duplicate
+
+Pattern นี้คือ **ELT** (Extract → Load to lake → Transform in warehouse) ซึ่งเป็นแนวทางมาตรฐานในงาน Data Engineering ปัจจุบัน
+
+---
 
 ## Curriculum
 
